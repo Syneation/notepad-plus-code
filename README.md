@@ -21,3 +21,4 @@ I hope you enjoy notepad+ :)
 
 ## Мои контакты:
 777999cosa@gmail.com
+(скоро будет русская версия)
