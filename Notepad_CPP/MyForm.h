@@ -952,77 +952,17 @@ namespace NotepadCPP {
 		}
 	}
 
-		   //Open File txt
+		   //Open File 
 	private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		try {
-			openFileDialog1->Filter = "Text Files (*.txt)|*.txt|Formatted Text (*.rtf)|*.rtf|All files (*.*)|*.*";
-
-			if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-				nameFile->Text = openFileDialog1->FileName;
-
-				if (openFileDialog1->FileName->EndsWith(".rtf")) {
-					// Uploading RTF while maintaining formatting
-					richTextBox1->LoadFile(openFileDialog1->FileName, RichTextBoxStreamType::RichText);
-				}
-				else {
-					// Uploading as plain text
-					richTextBox1->LoadFile(openFileDialog1->FileName, RichTextBoxStreamType::PlainText);
-				}
-
-				notifications->Text = "The file has been opened successfully";
-			}
-		}
-		catch (Exception^ ex) {
-			notifications->Text = "Error when opening a file";
-			MessageBox::Show("Error when opening a file: " + ex->Message,
-				"Error",
-				MessageBoxButtons::OK,
-				MessageBoxIcon::Error);
-		}
+		WorkWithFiles Files;
+		Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
 	}
 		   //icon
 	private: System::Void openFileIcon_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		try {
-			Stream^ stream;
-			openFileDialog1->Filter = "Text Files (*.txt)|*.txt|Formatted Text (*.rtf)|*.rtf|All files (*.*)|*.*";
-
-			if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-				nameFile->Text = openFileDialog1->FileName;
-
-				if (System::IO::Path::GetExtension(openFileDialog1->FileName)->ToLower() == ".rtf")
-				{
-					nameFile->Text = openFileDialog1->FileName;
-
-					richTextBox1->LoadFile(openFileDialog1->FileName, RichTextBoxStreamType::RichText);
-				}
-				
-				
-				else
-				{
-					//changes the label name to the file name
-					nameFile->Text = openFileDialog1->FileName;
-
-					if ((stream = openFileDialog1->OpenFile()) != nullptr)
-					{
-						stream->Close();
-						richTextBox1->Text = System::IO::File::ReadAllText(openFileDialog1->FileName);
-						notifications->Text = "the file was opened successfully";
-					}
-				}
-				
-
-				notifications->Text = "The file has been opened successfully";
-			}
-		}
-		catch (Exception^ ex) {
-			notifications->Text = "Error when opening a file";
-			MessageBox::Show("Error when opening a file: " + ex->Message,
-				"Error",
-				MessageBoxButtons::OK,
-				MessageBoxIcon::Error);
-		}
+		WorkWithFiles Files;
+		Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
 	}
 
 		   //Ctrl+different keys 
@@ -1097,32 +1037,8 @@ namespace NotepadCPP {
 		//open file
 		else if (e->Control && e->KeyCode == Keys::O)
 		{
-			try {
-				Stream^ stream;
-
-				openFileDialog1->Filter = "Текстовые файлы (*.txt)|*.txt|все файлы (*.*)|*.*";
-
-				if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-				{
-					//changes the label name to the file name
-					nameFile->Text = openFileDialog1->FileName;
-
-					if ((stream = openFileDialog1->OpenFile()) != nullptr)
-					{
-						stream->Close();
-						richTextBox1->Text = System::IO::File::ReadAllText(openFileDialog1->FileName);
-						notifications->Text = "the file was opened successfully";
-					}
-				}
-			}
-			catch (...)
-			{
-				notifications->Text = "Error when opening a file";
-				MessageBox::Show("Error when opening a file",
-					"Error",
-					MessageBoxButtons::OK,
-					MessageBoxIcon::Error);
-			}
+			WorkWithFiles Files;
+			Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
 		}
 
 		//increase
@@ -1253,18 +1169,14 @@ namespace NotepadCPP {
 		   //new file
 	private: System::Void newFile_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		richTextBox1->Clear();
-		nameFile->Text = "No File";
-		richTextBox1->Modified = false;  // Сбрасываем флаг изменений
-		notifications->Text = "New file created";
+		WorkWithFiles Files;
+		Files.createNewFile(richTextBox1, nameFile, notifications);
 	}
 		   //icon
 	private: System::Void toolStripButton1_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		richTextBox1->Text = "";
-		nameFile->Text = "No File";
-		notifications->Text = "notifications";
-		notifications->Text = "The file was successfully created";
+		WorkWithFiles Files;
+		Files.createNewFile(richTextBox1, nameFile, notifications);
 	}
 
 		   //save file
@@ -1282,7 +1194,8 @@ namespace NotepadCPP {
 				notifications->Text = "The file wasn't saved";
 			}
 		}
-		else {
+		else 
+		{
 			saveFileAs_Click(sender, e); // If the file is new, we call "Save as"
 		}
 	}
@@ -1312,58 +1225,14 @@ namespace NotepadCPP {
 		   //save as...
 	private: System::Void saveFileAs_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
-		saveFileDialog1->Filter = "Text Files (*.txt)|*.txt|Formatted Text (*.rtf)|*.rtf|All files (*.*)|*.*";
-		saveFileDialog1->FilterIndex = 1;
-		saveFileDialog1->RestoreDirectory = true;
-
-		if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) 
-		{
-			try 
-			{
-				if (saveFileDialog1->FilterIndex == 1) {
-					// Сохраняем как RTF
-					richTextBox1->SaveFile(saveFileDialog1->FileName, RichTextBoxStreamType::RichText);
-				}
-				else {
-					// Сохраняем как обычный текст
-					richTextBox1->SaveFile(saveFileDialog1->FileName, RichTextBoxStreamType::PlainText);
-				}
-				nameFile->Text = saveFileDialog1->FileName;
-				notifications->Text = "The file was saved successfully";
-			}
-			catch (Exception^ ex) 
-			{
-				notifications->Text = "Error when saving: " + ex->Message;
-			}
-		}
+		WorkWithFiles Files;
+		Files.fileSaveAs(richTextBox1, nameFile, notifications);
 	}
 		   //icon
 	private: System::Void toolStripButton4_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
-		saveFileDialog1->Filter = "Formatted text (*.rtf)|*.rtf|Text files (*.txt)|*.txt|All files (*.*)|*.*";
-		saveFileDialog1->FilterIndex = 1;
-		saveFileDialog1->RestoreDirectory = true;
-
-		if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-		{
-			try
-			{
-				if (saveFileDialog1->FilterIndex == 1) 
-					richTextBox1->SaveFile(saveFileDialog1->FileName, RichTextBoxStreamType::RichText);
-				
-				else 
-					richTextBox1->SaveFile(saveFileDialog1->FileName, RichTextBoxStreamType::PlainText);
-				
-				nameFile->Text = saveFileDialog1->FileName;
-				notifications->Text = "The file was saved successfully";
-			}
-			catch (Exception^ ex)
-			{
-				notifications->Text = "Error when saving: " + ex->Message;
-			}
-		}
+		WorkWithFiles Files;
+		Files.fileSaveAs(richTextBox1, nameFile, notifications);
 	}
 
 		   //print

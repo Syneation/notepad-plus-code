@@ -1,4 +1,6 @@
 ﻿  MyForm.cpp
+  MyForm1.cpp
+  PrintHelper.cpp
   Source.cpp
   Создание кода...
   MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
