@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <ctime>
 
 using namespace System;
@@ -8,7 +9,6 @@ using namespace System::IO;
 using namespace System::Drawing;
 using namespace System::Windows::Forms;
 using namespace System::Runtime::InteropServices;
-
 
 class helperRich
 {
@@ -102,12 +102,13 @@ class WorkWithLogTxt
 //Files
 class WorkWithFiles
 {
+
 	public: void createNewFile(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications)
 	{
 		richTextBox1->Clear();
 		nameFile->Text = "No File";
 		richTextBox1->Modified = false;  // Resetting the change flag
-		notifications->Text = "New file created";
+		notifications->Text = "New file created and Auto-save disabled";
 	}
 
 	
@@ -158,7 +159,7 @@ class WorkWithFiles
 		SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
 		saveFileDialog1->Filter = "Text Files (*.txt)|*.txt|Formatted Text (*.rtf)|*.rtf|All files (*.*)|*.*";
 		saveFileDialog1->RestoreDirectory = true;
-
+	
 		if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 		{
 			try
@@ -182,4 +183,36 @@ class WorkWithFiles
 			}
 		}
 	}
+
+	public: void fileSave(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications)
+	{
+		if (nameFile->Text != "No File")
+		{
+			try
+			{
+				if (nameFile->Text->EndsWith(".rtf", StringComparison::OrdinalIgnoreCase))
+				{
+					// save as rtf
+					richTextBox1->SaveFile(nameFile->Text, RichTextBoxStreamType::RichText);
+				}
+				else
+				{
+					// save as txt
+					File::WriteAllText(nameFile->Text, richTextBox1->Text);
+				}
+				notifications->Text = "File saved successfully";
+				richTextBox1->Modified = false;
+			}
+			catch (...)
+			{
+				notifications->Text = "The file wasn't saved";
+			}
+		}
+		else
+		{
+			fileSaveAs(richTextBox1, nameFile, notifications); // If the file is new, call "Save as"
+		}
+	}
+
+	
 };

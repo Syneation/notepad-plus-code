@@ -971,36 +971,15 @@ namespace NotepadCPP {
 		//save
 		if (e->Control && e->KeyCode == Keys::S)
 		{
-			e->Handled = true;
-			e->SuppressKeyPress = true;
-			if (nameFile->Text != "No File")
-			{
-				try {
-					StreamWriter^ streamWriter = gcnew StreamWriter(nameFile->Text, false);
-					streamWriter->Write(richTextBox1->Text);
-					streamWriter->Close();
-					notifications->Text = "The file was saved successfully";
-				}
-				catch (...) {
-					notifications->Text = "The file wasn't saved";
-				}
-			}
-			else
-			{
-				notifications->Text = "you can't save because you don't have the file open.";
-				MessageBox::Show("you can't save because you don't have the file open:",
-					"Error",
-					MessageBoxButtons::OK,
-					MessageBoxIcon::Error);
-			}
+			WorkWithFiles Files;
+			Files.fileSave(richTextBox1, nameFile, notifications);
 		}
 		//new File
 		else if (e->Control && e->KeyCode == Keys::N)
 		{
-			richTextBox1->Clear();
-			nameFile->Text = "No File";
-			richTextBox1->Modified = false;  // Сбрасываем флаг изменений
-			notifications->Text = "New file created";
+			WorkWithFiles Files;
+			offToolStripMenuItem_Click(this, e);
+			Files.createNewFile(richTextBox1, nameFile, notifications);
 		}
 		//undo
 		else if (e->Control && e->KeyCode == Keys::Z)
@@ -1159,6 +1138,7 @@ namespace NotepadCPP {
 		{
 			helperRich HelperRich;
 			HelperRich.ToggleFontStyle(FontStyle::Strikeout, richTextBox1, notifications);
+			
 		}
 
 
@@ -1170,56 +1150,29 @@ namespace NotepadCPP {
 	private: System::Void newFile_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
+		offToolStripMenuItem_Click(this, e);
 		Files.createNewFile(richTextBox1, nameFile, notifications);
 	}
 		   //icon
 	private: System::Void toolStripButton1_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
+		offToolStripMenuItem_Click(this, e);
 		Files.createNewFile(richTextBox1, nameFile, notifications);
 	}
 
 		   //save file
 	private: System::Void saveFile_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		if (nameFile->Text != "No File") {
-			try 
-			{
-				// Save as RTF to preserve formatting
-				richTextBox1->SaveFile(nameFile->Text, RichTextBoxStreamType::RichText);
-				notifications->Text = "The file was saved successfully";
-			}
-			catch (...) 
-			{
-				notifications->Text = "The file wasn't saved";
-			}
-		}
-		else 
-		{
-			saveFileAs_Click(sender, e); // If the file is new, we call "Save as"
-		}
+		WorkWithFiles Files;
+		Files.fileSave(richTextBox1, nameFile, notifications);
 	}
 
 		   //icon
 	private: System::Void toolStripButton3_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		if (nameFile->Text != "No File") 
-		{
-			try
-			{
-				// Сохраняем как RTF для сохранения форматирования
-				richTextBox1->SaveFile(nameFile->Text, RichTextBoxStreamType::RichText);
-				notifications->Text = "The file was saved successfully";
-			}
-			catch (...)
-			{
-				notifications->Text = "The file wasn't saved";
-			}
-		}
-		else 
-		{
-			saveFileAs_Click(sender, e); // Если файл новый, вызываем "Сохранить как"
-		}
+		WorkWithFiles Files;
+		Files.fileSave(richTextBox1, nameFile, notifications);
 	}
 
 		   //save as...
@@ -1601,16 +1554,8 @@ namespace NotepadCPP {
 		// Auto-save file if it has a name
 		if (nameFile->Text != "No File")
 		{
-			try 
-			{
-				StreamWriter^ streamWriter = gcnew StreamWriter(nameFile->Text, false);
-				streamWriter->Write(richTextBox1->Text);
-				streamWriter->Close();
-				notifications->Text = "File saved successfully";
-			}
-			catch (...) {
-				notifications->Text = "Failed to save file";
-			}
+			WorkWithFiles Files;
+			Files.fileSave(richTextBox1, nameFile, notifications);
 		}
 		else
 		{
