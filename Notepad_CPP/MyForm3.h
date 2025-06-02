@@ -116,7 +116,7 @@ namespace NotepadCPP {
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(60, 13);
 			this->label5->TabIndex = 4;
-			this->label5->Text = L"Version 2.0";
+			this->label5->Text = L"Version 3.0";
 			// 
 			// MyForm3
 			// 

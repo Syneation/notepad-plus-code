@@ -76,6 +76,31 @@ class helperRich
 		}
 	
 	}	
+
+	public: String^ DetectEncodingSimple(String^ filePath)
+	{
+		try
+		{
+			// Reading the first 4 bytes of the file
+			array<unsigned char>^ bytes = File::ReadAllBytes(filePath);
+
+			if (bytes->Length >= 4)
+			{
+				// Checking the BOM (encoding markers)
+				if (bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF)
+					return "UTF-8";
+				else if (bytes[0] == 0xFF && bytes[1] == 0xFE)
+					return "UTF-16 (LE)";
+				else if (bytes[0] == 0xFE && bytes[1] == 0xFF)
+					return "UTF-16 (BE)";
+			}
+			return "ANSI";
+		}
+		catch (Exception^ e)
+		{
+			return "Detection error: " + e->Message;
+		}
+	}
 	
 };
 
@@ -112,7 +137,7 @@ class WorkWithFiles
 	}
 
 	
-	public: void openFile(OpenFileDialog^ openFileDialog1, Label^ nameFile, Label^ notifications , RichTextBox^ richTextBox1)
+	public: void openFile(OpenFileDialog^ openFileDialog1, Label^ nameFile, Label^ notifications,Label^ encoding, RichTextBox^ richTextBox1)
 	{
 		try {
 			Stream^ stream;
@@ -137,11 +162,11 @@ class WorkWithFiles
 					{
 						stream->Close();
 						richTextBox1->Text = System::IO::File::ReadAllText(openFileDialog1->FileName);
-						notifications->Text = "the file was opened successfully";
 					}
 				}
 
-
+				helperRich HRich;
+				encoding->Text = HRich.DetectEncodingSimple(nameFile->Text);
 				notifications->Text = "The file has been opened successfully";
 			}
 		}
@@ -154,8 +179,10 @@ class WorkWithFiles
 		}
 	}
 
-	public: void fileSaveAs(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications)
+	public: void fileSaveAs(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications, Label^ encoding)
 	{
+		helperRich HRich;
+
 		SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
 		saveFileDialog1->Filter = "Text Files (*.txt)|*.txt|Formatted Text (*.rtf)|*.rtf|All files (*.*)|*.*";
 		saveFileDialog1->RestoreDirectory = true;
@@ -176,6 +203,7 @@ class WorkWithFiles
 				}
 				nameFile->Text = saveFileDialog1->FileName;
 				notifications->Text = "The file was saved successfully";
+				encoding->Text = HRich.DetectEncodingSimple(nameFile->Text);
 			}
 			catch (Exception^ ex)
 			{
@@ -184,7 +212,7 @@ class WorkWithFiles
 		}
 	}
 
-	public: void fileSave(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications)
+	public: void fileSave(RichTextBox^ richTextBox1, Label^ nameFile, Label^ notifications, Label^ encoding)
 	{
 		if (nameFile->Text != "No File")
 		{
@@ -210,9 +238,108 @@ class WorkWithFiles
 		}
 		else
 		{
-			fileSaveAs(richTextBox1, nameFile, notifications); // If the file is new, call "Save as"
+			fileSaveAs(richTextBox1, nameFile, notifications, encoding); // If the file is new, call "Save as"
 		}
 	}
 
 	
+};
+
+class WorkWithForm
+{
+	public: void blackTheme(Control^ targerControl, RichTextBox^ richTextBox1,
+		ToolStrip^ toolStrip1, MenuStrip^ menuStrip1, Label^ notifications)
+	{
+		targerControl->BackColor = System::Drawing::Color::FromArgb(60, 60, 60);
+		targerControl->ForeColor = System::Drawing::Color::White;
+	
+		richTextBox1->BackColor = System::Drawing::Color::FromArgb(60, 60, 60);
+		richTextBox1->ForeColor = System::Drawing::Color::White;
+	
+		toolStrip1->BackColor = System::Drawing::Color::FromArgb(60, 60, 60);
+	
+		menuStrip1->BackColor = System::Drawing::Color::FromArgb(60, 60, 60);
+		menuStrip1->ForeColor = System::Drawing::Color::White;
+	
+		notifications->Text = "The theme has been changed to dark";
+	}
+
+	public: void whiteTheme(Control^ targerControl, RichTextBox^ richTextBox1,
+		ToolStrip^ toolStrip1, MenuStrip^ menuStrip1, Label^ notifications)
+	{
+		targerControl->BackColor = System::Drawing::Color::White;
+		targerControl->ForeColor = System::Drawing::Color::Black;
+	
+		richTextBox1->BackColor = System::Drawing::Color::White;
+		richTextBox1->ForeColor = System::Drawing::Color::Black;
+	
+		toolStrip1->BackColor = System::Drawing::Color::White;
+	
+		menuStrip1->BackColor = System::Drawing::Color::White;
+		menuStrip1->ForeColor = System::Drawing::Color::Black;
+	
+		notifications->Text = "The theme has been changed to a light one";
+	}
+};
+
+class altPressedSelect
+{
+	private: 
+		Point mouseStartPos;
+		bool isAltPressed = false;
+
+	public:
+		void SelectVerticalBlock(int startX, int endX, RichTextBox^ richTextBox1) {
+			richTextBox1->SelectAll();
+			richTextBox1->SelectionBackColor = richTextBox1->BackColor; // Resetting the selection
+
+			for (int i = 0; i < richTextBox1->Lines->Length; i++) 
+			{
+				String^ line = richTextBox1->Lines[i];
+				int lineStart = richTextBox1->GetFirstCharIndexFromLine(i);
+
+				// Defining the selection boundaries for the current row
+				int startPos = GetCharIndexFromX(line, startX);
+				int endPos = GetCharIndexFromX(line, endX);
+
+				if (startPos >= 0 && endPos >= 0) {
+					int selectStart = lineStart + min(startPos, endPos);
+					int selectLength = abs(endPos - startPos);
+
+					richTextBox1->Select(selectStart, selectLength);
+					richTextBox1->SelectionBackColor = Color::LightBlue;
+				}
+			}
+		}
+
+		int GetCharIndexFromX(String^ line, int xPos) {
+			return min(xPos / 8, line->Length); // 8 is the approximate width of the character.
+		}
+
+	//Processing keystrokes
+	public: System::Void RichTextBox_KeyDown(System::Object^ sender, KeyEventArgs^ e) {
+		isAltPressed = e->Alt;
+	}
+
+	public: System::Void RichTextBox_KeyUp(System::Object^ sender, KeyEventArgs^ e) {
+		isAltPressed = false;
+	}
+
+	//Processing mouse movement
+	public: System::Void RichTextBox_MouseDown(System::Object^ sender, MouseEventArgs^ e) {
+		if (isAltPressed && e->Button == MouseButtons::Left) {
+			mouseStartPos = e->Location;
+		}
+	}
+
+	public: System::Void RichTextBox_MouseMove(System::Object^ sender, MouseEventArgs^ e, RichTextBox^ richTextBox1) {
+		if (isAltPressed && e->Button == MouseButtons::Left) {
+			// We get the starting and ending positions
+			int startX = mouseStartPos.X;
+			int endX = e->X;
+	
+			// We select the vertical block
+			SelectVerticalBlock(startX, endX, richTextBox1);
+		}
+	}
 };

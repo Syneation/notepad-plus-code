@@ -25,7 +25,6 @@ namespace NotepadCPP {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-
 	private:
 		System::Windows::Forms::Timer^ typingTimer;
 		System::Windows::Forms::ToolStripMenuItem^ colorBGToolStripMenuItem;
@@ -34,7 +33,17 @@ namespace NotepadCPP {
 		System::Windows::Forms::ToolStripMenuItem^ resetTheTextSettingsToolStripMenuItem;
 
 
-		bool checkAutoSave;
+		System::Windows::Forms::ToolStripMenuItem^ settingToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ lineBreakCheck;
+	private: System::Windows::Forms::ToolStripMenuItem^ themeToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ whiteToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ blackToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ themeToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ whiteToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ blackToolStripMenuItem1;
+	private: System::Windows::Forms::Label^ encoding;
+
+		bool checkAutoSave = false;
 
 	public:
 
@@ -118,11 +127,12 @@ namespace NotepadCPP {
 	private: System::Windows::Forms::ToolStripButton^ toolStripButton13;
 	private: System::Windows::Forms::ToolStripButton^ toolStripButton14;
 	private: System::Windows::Forms::ToolStripButton^ toolStripButton15;
-	private: System::Windows::Forms::ToolStripMenuItem^ dateTimeToolStripMenuItem;
+private: System::Windows::Forms::ToolStripMenuItem^ autoSave;
+
 	private: System::Windows::Forms::ToolStripButton^ toolStripButton16;
 	private: System::Windows::Forms::ToolStripMenuItem^ copyrightToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ onToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ offToolStripMenuItem;
+
+
 	private: System::Windows::Forms::ToolStripMenuItem^ dateTimeToolStripMenuItem1;
 	private: System::Windows::Forms::Label^ infoText;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
@@ -187,13 +197,19 @@ namespace NotepadCPP {
 			this->dateAndTimeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->copyrightToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->trademarkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->dateTimeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->onToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->offToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->autoSave = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->dateTimeToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->colorBGToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->themeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->whiteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->blackToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->resetTheTextSettingsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->aboutToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->settingToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->lineBreakCheck = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->themeToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->whiteToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->blackToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStrip1 = (gcnew System::Windows::Forms::ToolStrip());
 			this->toolStripButton1 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->openFileIcon = (gcnew System::Windows::Forms::ToolStripButton());
@@ -222,6 +238,7 @@ namespace NotepadCPP {
 			this->DirectorySearcher = (gcnew System::DirectoryServices::DirectorySearcher());
 			this->fontDialog1 = (gcnew System::Windows::Forms::FontDialog());
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
+			this->encoding = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			this->toolStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -237,7 +254,7 @@ namespace NotepadCPP {
 			this->richTextBox1->ImeMode = System::Windows::Forms::ImeMode::NoControl;
 			this->richTextBox1->Location = System::Drawing::Point(0, 52);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(1040, 410);
+			this->richTextBox1->Size = System::Drawing::Size(1052, 410);
 			this->richTextBox1->TabIndex = 1;
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->WordWrap = false;
@@ -245,9 +262,9 @@ namespace NotepadCPP {
 			// 
 			// menuStrip1
 			// 
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				this->fileToolStripMenuItem1,
-					this->editToolStripMenuItem, this->aboutToolStripMenuItem
+					this->editToolStripMenuItem, this->aboutToolStripMenuItem, this->settingToolStripMenuItem1
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -309,11 +326,11 @@ namespace NotepadCPP {
 			// 
 			// editToolStripMenuItem
 			// 
-			this->editToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(14) {
+			this->editToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(15) {
 				this->cancelToolStripMenuItem,
 					this->cutToolStripMenuItem, this->copyToolStripMenuItem, this->pasteToolStripMenuItem, this->deleteToolStripMenuItem, this->deleteAllToolStripMenuItem,
 					this->findToolStripMenuItem, this->replaceToolStripMenuItem, this->selectAllToolStripMenuItem, this->dateAndTimeToolStripMenuItem,
-					this->dateTimeToolStripMenuItem, this->dateTimeToolStripMenuItem1, this->colorBGToolStripMenuItem, this->resetTheTextSettingsToolStripMenuItem
+					this->autoSave, this->dateTimeToolStripMenuItem1, this->colorBGToolStripMenuItem, this->themeToolStripMenuItem, this->resetTheTextSettingsToolStripMenuItem
 			});
 			this->editToolStripMenuItem->Name = L"editToolStripMenuItem";
 			this->editToolStripMenuItem->Size = System::Drawing::Size(39, 20);
@@ -322,62 +339,62 @@ namespace NotepadCPP {
 			// cancelToolStripMenuItem
 			// 
 			this->cancelToolStripMenuItem->Name = L"cancelToolStripMenuItem";
-			this->cancelToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->cancelToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->cancelToolStripMenuItem->Text = L"Cancel";
 			this->cancelToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::cancelToolStripMenuItem_Click);
 			// 
 			// cutToolStripMenuItem
 			// 
 			this->cutToolStripMenuItem->Name = L"cutToolStripMenuItem";
-			this->cutToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->cutToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->cutToolStripMenuItem->Text = L"Cut";
 			this->cutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::cutToolStripMenuItem_Click);
 			// 
 			// copyToolStripMenuItem
 			// 
 			this->copyToolStripMenuItem->Name = L"copyToolStripMenuItem";
-			this->copyToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->copyToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->copyToolStripMenuItem->Text = L"Copy";
 			this->copyToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::copyToolStripMenuItem_Click);
 			// 
 			// pasteToolStripMenuItem
 			// 
 			this->pasteToolStripMenuItem->Name = L"pasteToolStripMenuItem";
-			this->pasteToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->pasteToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->pasteToolStripMenuItem->Text = L"Paste";
 			this->pasteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::pasteToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
 			this->deleteToolStripMenuItem->Name = L"deleteToolStripMenuItem";
-			this->deleteToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->deleteToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->deleteToolStripMenuItem->Text = L"Delete";
 			// 
 			// deleteAllToolStripMenuItem
 			// 
 			this->deleteAllToolStripMenuItem->Name = L"deleteAllToolStripMenuItem";
-			this->deleteAllToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->deleteAllToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->deleteAllToolStripMenuItem->Text = L"Delete All";
 			this->deleteAllToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::deleteAllToolStripMenuItem_Click);
 			// 
 			// findToolStripMenuItem
 			// 
 			this->findToolStripMenuItem->Name = L"findToolStripMenuItem";
-			this->findToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->findToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->findToolStripMenuItem->Text = L"Find...";
 			this->findToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::findToolStripMenuItem_Click);
 			// 
 			// replaceToolStripMenuItem
 			// 
 			this->replaceToolStripMenuItem->Name = L"replaceToolStripMenuItem";
-			this->replaceToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->replaceToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->replaceToolStripMenuItem->Text = L"Replace...";
 			this->replaceToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::replaceToolStripMenuItem_Click_1);
 			// 
 			// selectAllToolStripMenuItem
 			// 
 			this->selectAllToolStripMenuItem->Name = L"selectAllToolStripMenuItem";
-			this->selectAllToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->selectAllToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->selectAllToolStripMenuItem->Text = L"Select All";
 			this->selectAllToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::selectAllToolStripMenuItem_Click);
 			// 
@@ -388,7 +405,7 @@ namespace NotepadCPP {
 					this->trademarkToolStripMenuItem
 			});
 			this->dateAndTimeToolStripMenuItem->Name = L"dateAndTimeToolStripMenuItem";
-			this->dateAndTimeToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->dateAndTimeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->dateAndTimeToolStripMenuItem->Text = L"Icon";
 			// 
 			// copyrightToolStripMenuItem
@@ -405,48 +422,58 @@ namespace NotepadCPP {
 			this->trademarkToolStripMenuItem->Text = L"trademark (®)";
 			this->trademarkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::trademarkToolStripMenuItem_Click);
 			// 
-			// dateTimeToolStripMenuItem
+			// autoSave
 			// 
-			this->dateTimeToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
-				this->onToolStripMenuItem,
-					this->offToolStripMenuItem
-			});
-			this->dateTimeToolStripMenuItem->Name = L"dateTimeToolStripMenuItem";
-			this->dateTimeToolStripMenuItem->Size = System::Drawing::Size(171, 22);
-			this->dateTimeToolStripMenuItem->Text = L"autosave";
-			// 
-			// onToolStripMenuItem
-			// 
-			this->onToolStripMenuItem->Name = L"onToolStripMenuItem";
-			this->onToolStripMenuItem->Size = System::Drawing::Size(91, 22);
-			this->onToolStripMenuItem->Text = L"On";
-			this->onToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::onToolStripMenuItem_Click);
-			// 
-			// offToolStripMenuItem
-			// 
-			this->offToolStripMenuItem->Name = L"offToolStripMenuItem";
-			this->offToolStripMenuItem->Size = System::Drawing::Size(91, 22);
-			this->offToolStripMenuItem->Text = L"Off";
-			this->offToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::offToolStripMenuItem_Click);
+			this->autoSave->CheckOnClick = true;
+			this->autoSave->DoubleClickEnabled = true;
+			this->autoSave->Name = L"autoSave";
+			this->autoSave->Size = System::Drawing::Size(180, 22);
+			this->autoSave->Text = L"autosave";
+			this->autoSave->Click += gcnew System::EventHandler(this, &MyForm::dateTimeToolStripMenuItem_Click);
 			// 
 			// dateTimeToolStripMenuItem1
 			// 
 			this->dateTimeToolStripMenuItem1->Name = L"dateTimeToolStripMenuItem1";
-			this->dateTimeToolStripMenuItem1->Size = System::Drawing::Size(171, 22);
+			this->dateTimeToolStripMenuItem1->Size = System::Drawing::Size(180, 22);
 			this->dateTimeToolStripMenuItem1->Text = L"Date Time";
 			this->dateTimeToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MyForm::dateTimeToolStripMenuItem1_Click);
 			// 
 			// colorBGToolStripMenuItem
 			// 
 			this->colorBGToolStripMenuItem->Name = L"colorBGToolStripMenuItem";
-			this->colorBGToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->colorBGToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->colorBGToolStripMenuItem->Text = L"Color BG";
 			this->colorBGToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::colorBGToolStripMenuItem_Click);
+			// 
+			// themeToolStripMenuItem
+			// 
+			this->themeToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->whiteToolStripMenuItem,
+					this->blackToolStripMenuItem
+			});
+			this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
+			this->themeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->themeToolStripMenuItem->Text = L"Theme";
+			this->themeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::themeToolStripMenuItem_Click);
+			// 
+			// whiteToolStripMenuItem
+			// 
+			this->whiteToolStripMenuItem->Name = L"whiteToolStripMenuItem";
+			this->whiteToolStripMenuItem->Size = System::Drawing::Size(105, 22);
+			this->whiteToolStripMenuItem->Text = L"White";
+			this->whiteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::whiteToolStripMenuItem_Click);
+			// 
+			// blackToolStripMenuItem
+			// 
+			this->blackToolStripMenuItem->Name = L"blackToolStripMenuItem";
+			this->blackToolStripMenuItem->Size = System::Drawing::Size(105, 22);
+			this->blackToolStripMenuItem->Text = L"Black";
+			this->blackToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::blackToolStripMenuItem_Click);
 			// 
 			// resetTheTextSettingsToolStripMenuItem
 			// 
 			this->resetTheTextSettingsToolStripMenuItem->Name = L"resetTheTextSettingsToolStripMenuItem";
-			this->resetTheTextSettingsToolStripMenuItem->Size = System::Drawing::Size(171, 22);
+			this->resetTheTextSettingsToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->resetTheTextSettingsToolStripMenuItem->Text = L"Reset Text Settings";
 			this->resetTheTextSettingsToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::resetTheTextSettingsToolStripMenuItem_Click);
 			// 
@@ -456,6 +483,49 @@ namespace NotepadCPP {
 			this->aboutToolStripMenuItem->Size = System::Drawing::Size(52, 20);
 			this->aboutToolStripMenuItem->Text = L"About";
 			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::aboutToolStripMenuItem_Click);
+			// 
+			// settingToolStripMenuItem1
+			// 
+			this->settingToolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->lineBreakCheck,
+					this->themeToolStripMenuItem1
+			});
+			this->settingToolStripMenuItem1->Name = L"settingToolStripMenuItem1";
+			this->settingToolStripMenuItem1->Size = System::Drawing::Size(56, 20);
+			this->settingToolStripMenuItem1->Text = L"Setting";
+			// 
+			// lineBreakCheck
+			// 
+			this->lineBreakCheck->CheckOnClick = true;
+			this->lineBreakCheck->DoubleClickEnabled = true;
+			this->lineBreakCheck->Name = L"lineBreakCheck";
+			this->lineBreakCheck->Size = System::Drawing::Size(125, 22);
+			this->lineBreakCheck->Text = L"line break";
+			this->lineBreakCheck->Click += gcnew System::EventHandler(this, &MyForm::lineBreakToolStripMenuItem_Click);
+			// 
+			// themeToolStripMenuItem1
+			// 
+			this->themeToolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->whiteToolStripMenuItem1,
+					this->blackToolStripMenuItem1
+			});
+			this->themeToolStripMenuItem1->Name = L"themeToolStripMenuItem1";
+			this->themeToolStripMenuItem1->Size = System::Drawing::Size(125, 22);
+			this->themeToolStripMenuItem1->Text = L"Theme";
+			// 
+			// whiteToolStripMenuItem1
+			// 
+			this->whiteToolStripMenuItem1->Name = L"whiteToolStripMenuItem1";
+			this->whiteToolStripMenuItem1->Size = System::Drawing::Size(105, 22);
+			this->whiteToolStripMenuItem1->Text = L"White";
+			this->whiteToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MyForm::whiteToolStripMenuItem1_Click);
+			// 
+			// blackToolStripMenuItem1
+			// 
+			this->blackToolStripMenuItem1->Name = L"blackToolStripMenuItem1";
+			this->blackToolStripMenuItem1->Size = System::Drawing::Size(105, 22);
+			this->blackToolStripMenuItem1->Text = L"Black";
+			this->blackToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MyForm::blackToolStripMenuItem1_Click);
 			// 
 			// toolStrip1
 			// 
@@ -677,7 +747,7 @@ namespace NotepadCPP {
 			// 
 			this->infoText->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->infoText->AutoSize = true;
-			this->infoText->Location = System::Drawing::Point(752, 474);
+			this->infoText->Location = System::Drawing::Point(685, 474);
 			this->infoText->Name = L"infoText";
 			this->infoText->Size = System::Drawing::Size(33, 13);
 			this->infoText->TabIndex = 4;
@@ -697,12 +767,13 @@ namespace NotepadCPP {
 			this->nameFile->Size = System::Drawing::Size(40, 13);
 			this->nameFile->TabIndex = 5;
 			this->nameFile->Text = L"No File";
+			this->nameFile->Click += gcnew System::EventHandler(this, &MyForm::nameFile_Click);
 			// 
 			// notifications
 			// 
 			this->notifications->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->notifications->AutoSize = true;
-			this->notifications->Location = System::Drawing::Point(357, 474);
+			this->notifications->Location = System::Drawing::Point(348, 474);
 			this->notifications->Name = L"notifications";
 			this->notifications->Size = System::Drawing::Size(63, 13);
 			this->notifications->TabIndex = 6;
@@ -714,19 +785,33 @@ namespace NotepadCPP {
 			this->DirectorySearcher->ServerPageTimeLimit = System::TimeSpan::Parse(L"-00:00:01");
 			this->DirectorySearcher->ServerTimeLimit = System::TimeSpan::Parse(L"-00:00:01");
 			// 
+			// encoding
+			// 
+			this->encoding->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
+			this->encoding->AutoSize = true;
+			this->encoding->Location = System::Drawing::Point(956, 474);
+			this->encoding->Name = L"encoding";
+			this->encoding->Size = System::Drawing::Size(84, 13);
+			this->encoding->TabIndex = 7;
+			this->encoding->Text = L"Encoding: None";
+			this->encoding->Click += gcnew System::EventHandler(this, &MyForm::codeText_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
 			this->AutoValidate = System::Windows::Forms::AutoValidate::Disable;
+			this->BackColor = System::Drawing::Color::White;
 			this->ClientSize = System::Drawing::Size(1052, 496);
+			this->Controls->Add(this->encoding);
 			this->Controls->Add(this->notifications);
 			this->Controls->Add(this->nameFile);
 			this->Controls->Add(this->infoText);
 			this->Controls->Add(this->toolStrip1);
 			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->richTextBox1);
+			this->ForeColor = System::Drawing::Color::Black;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MinimumSize = System::Drawing::Size(1068, 535);
 			this->Name = L"MyForm";
@@ -750,6 +835,7 @@ namespace NotepadCPP {
 	{
 		LoadSettings();
 	}
+	
 
 	private: System::Void replaceToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -775,6 +861,7 @@ namespace NotepadCPP {
 			typingTimer->Start();
 		}
 	}
+
 
 	//exit
 	private: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e)
@@ -956,13 +1043,13 @@ namespace NotepadCPP {
 	private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
+		Files.openFile(openFileDialog1, nameFile, notifications, encoding, richTextBox1);
 	}
 		   //icon
 	private: System::Void openFileIcon_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
+		Files.openFile(openFileDialog1, nameFile, notifications, encoding, richTextBox1);
 	}
 
 		   //Ctrl+different keys 
@@ -972,7 +1059,7 @@ namespace NotepadCPP {
 		if (e->Control && e->KeyCode == Keys::S)
 		{
 			WorkWithFiles Files;
-			Files.fileSave(richTextBox1, nameFile, notifications);
+			Files.fileSave(richTextBox1, nameFile, notifications, encoding);
 		}
 		//new File
 		else if (e->Control && e->KeyCode == Keys::N)
@@ -1017,7 +1104,7 @@ namespace NotepadCPP {
 		else if (e->Control && e->KeyCode == Keys::O)
 		{
 			WorkWithFiles Files;
-			Files.openFile(openFileDialog1, nameFile, notifications, richTextBox1);
+			Files.openFile(openFileDialog1, nameFile, notifications, encoding,richTextBox1);
 		}
 
 		//increase
@@ -1165,27 +1252,27 @@ namespace NotepadCPP {
 	private: System::Void saveFile_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.fileSave(richTextBox1, nameFile, notifications);
+		Files.fileSave(richTextBox1, nameFile, notifications, encoding);
 	}
 
 		   //icon
 	private: System::Void toolStripButton3_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.fileSave(richTextBox1, nameFile, notifications);
+		Files.fileSave(richTextBox1, nameFile, notifications, encoding);
 	}
 
 		   //save as...
 	private: System::Void saveFileAs_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.fileSaveAs(richTextBox1, nameFile, notifications);
+		Files.fileSaveAs(richTextBox1, nameFile, notifications, encoding);
 	}
 		   //icon
 	private: System::Void toolStripButton4_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		WorkWithFiles Files;
-		Files.fileSaveAs(richTextBox1, nameFile, notifications);
+		Files.fileSaveAs(richTextBox1, nameFile, notifications, encoding);
 	}
 
 		   //print
@@ -1555,7 +1642,7 @@ namespace NotepadCPP {
 		if (nameFile->Text != "No File")
 		{
 			WorkWithFiles Files;
-			Files.fileSave(richTextBox1, nameFile, notifications);
+			Files.fileSave(richTextBox1, nameFile, notifications, encoding);
 		}
 		else
 		{
@@ -1567,30 +1654,43 @@ namespace NotepadCPP {
 		}
 	}
 
-		  // Enable auto-save
-	private: System::Void onToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+	//auto save
+	private: System::Void dateTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		if (nameFile->Text != "No File")
+		bool currentStateAutoSave = this->autoSave->Checked;
+
+		// Enable auto-save
+		if (currentStateAutoSave)
 		{
-			checkAutoSave = true;
-			notifications->Text = "Auto-save enabled";
+			if (nameFile->Text != "No File")
+			{
+				checkAutoSave = true;
+				notifications->Text = "Auto-save enabled";
+			}
+			else
+			{
+				MessageBox::Show("cannot save - no file is open",
+					"Error",
+					MessageBoxButtons::OK,
+					MessageBoxIcon::Error);
+				notifications->Text = "Please create a new file or open an existing one!";
+				currentStateAutoSave = false;
+			}
 		}
 		else
 		{
-			MessageBox::Show("cannot save - no file is open",
-				"Error",
-				MessageBoxButtons::OK,
-				MessageBoxIcon::Error);
-			notifications->Text = "Please create a new file or open an existing one!";
+			offToolStripMenuItem_Click(this, e);
 		}
+
 	}
 
-		   // Disable auto-save
-	private: System::Void offToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
-	{
-		checkAutoSave = false;
-		notifications->Text = "Auto-save disabled";
-	}
+	   // Disable auto-save
+		private: System::Void offToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+		{
+			checkAutoSave = false;
+			notifications->Text = "Auto-save disabled";
+		}
+
 
 
 	//info about
@@ -1618,8 +1718,72 @@ namespace NotepadCPP {
 		richTextBox1->Invalidate();
 		notifications->Text = "settings reset successful";
 	}
+
+	//show encoding
+	private: System::Void codeText_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		MessageBox::Show(
+			"To find out the encoding, you need to save the file or open it!", 
+			"Info",
+			MessageBoxButtons::OK,
+			MessageBoxIcon::Information
+		);
+	}
 	
 	
+	//////////////////////////////////
+	/////////setting/////////////////
+	////////////////////////////////
+
+	//line break
+	private: System::Void lineBreakToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		bool currentStateCheckLineBreak = this->lineBreakCheck->Checked;
+
+		if (currentStateCheckLineBreak)
+		{
+			notifications->Text = "line break on";
+			richTextBox1->WordWrap = true;
+		}
+		else
+		{
+			notifications->Text = "line break off";
+			this->richTextBox1->WordWrap = false;
+		}
+	}
+	
+	//Theme
+	private: System::Void themeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+
+	}
+	//black theme
+	private: System::Void blackToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		WorkWithForm WForm;
+		WForm.blackTheme(this, richTextBox1, toolStrip1, menuStrip1, notifications);
+	}
+	//White theme
+	private: System::Void whiteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		WorkWithForm WForm;
+		WForm.whiteTheme(this, richTextBox1, toolStrip1, menuStrip1, notifications);
+	}
+	//Black theme (setting)
+	private: System::Void blackToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		WorkWithForm WForm;
+		WForm.blackTheme(this, richTextBox1, toolStrip1, menuStrip1, notifications);
+	}
+	//White theme (setting)
+	private: System::Void whiteToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		WorkWithForm WForm;
+		WForm.whiteTheme(this, richTextBox1, toolStrip1, menuStrip1, notifications);
+	}
+
+	private: System::Void nameFile_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
 
 };
 }
