@@ -8,7 +8,7 @@ you can download the setup of my program in my repository - notepad-plus ;)
 I hope you enjoy notepad+ :)
 
 ## My contacts:
-777999cosa@gmail.com
+syneation@gmail.com
 
 # RU
 # notepad+ (код)
@@ -20,5 +20,5 @@ I hope you enjoy notepad+ :)
 Надеюсь, вам понравится notepad+ :)
 
 ## Мои контакты:
-777999cosa@gmail.com
+syneation@gmail.com
 (скоро будет русская версия)
